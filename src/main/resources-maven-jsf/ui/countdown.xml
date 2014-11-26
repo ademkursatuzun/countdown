@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>countdown</tag>
+    <tagClass>org.primefaces.component.countdown.Countdown</tagClass>
+    <componentClass>org.primefaces.component.countdown.Countdown</componentClass>
+    <componentType>org.primefaces.component.Countdown</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.CountdownRenderer</rendererType>
+    <rendererClass>org.primefaces.component.countdown.CountdownRenderer</rendererClass>
+    <parent>javax.faces.component.UIOutput</parent>
+    <description>Countdown displays passed time.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        <attribute>
+            <name>pattern</name>
+            <required>false</required>
+            <type>String</type>
+            <description>Special Datetime format.</description>
+        </attribute>
+        <attribute>
+            <name>reverse</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>client</defaultValue>
+            <description>When is enabled, that is counting reverse.   </description>
+        </attribute>
+        <attribute>
+            <name>finishTime</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>infinite</defaultValue>
+            <description>If is not infinite that is matching with pattern for callback ajax .</description>
+        </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>en</defaultValue>
+            <description> Locale to be used for labels.</description>
+        </attribute>
+         <attribute>
+            <name>autostart</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Default value is false.If is true, it'll autostart.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>countdown/countdown.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>primefaces.js</name>
+        </resource>
+        <resource>
+            <name>countdown/countdown.js</name>
+        </resource>
+    </resources>
+</component>
