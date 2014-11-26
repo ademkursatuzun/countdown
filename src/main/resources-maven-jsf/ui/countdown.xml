@@ -30,7 +30,7 @@
             <name>reverse</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>client</defaultValue>
+            <defaultValue>false</defaultValue>
             <description>When is enabled, that is counting reverse.   </description>
         </attribute>
         <attribute>
