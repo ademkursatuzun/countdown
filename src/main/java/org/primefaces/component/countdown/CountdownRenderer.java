@@ -35,6 +35,7 @@ public class CountdownRenderer extends CoreRenderer {
 
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Countdown countdown = (Countdown) component;
 
@@ -56,14 +57,17 @@ public class CountdownRenderer extends CoreRenderer {
         String clientId = countdown.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         String finishTime = countdown.getFinishTime();
+        String locale = countdown.getLocale();
 
         wb.init("Countdown", countdown.resolveWidgetVar(), clientId);
         wb.attr("pattern", countdown.getPattern(), null)
                 .attr("reverse", countdown.isReverse(), false)
                 .attr("finishTime", finishTime, "infinite")
                 .attr("autoStart", countdown.isAutostart(), false)
-                .attr("locale", context.getViewRoot().getLocale().toString());
-        
+                .attr("locale", locale);
+
+        wb.finish();
+
 
     }
 }
