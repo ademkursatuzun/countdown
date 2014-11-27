@@ -16,6 +16,7 @@
 package org.primefaces.component.countdown;
 
 import java.io.IOException;
+import java.util.Locale;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -57,14 +58,14 @@ public class CountdownRenderer extends CoreRenderer {
         String clientId = countdown.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         String finishTime = countdown.getFinishTime();
-        String locale = countdown.getLocale();
+        Locale locale = countdown.calculateLocale(context);
 
         wb.init("Countdown", countdown.resolveWidgetVar(), clientId);
         wb.attr("pattern", countdown.getPattern(), null)
                 .attr("reverse", countdown.isReverse(), false)
-                .attr("finishTime", finishTime, "infinite")
                 .attr("autoStart", countdown.isAutostart(), false)
-                .attr("locale", locale);
+                .attr("locale", locale.toString())
+                .attr("finishTime", finishTime, "infinite");
 
         wb.finish();
 
