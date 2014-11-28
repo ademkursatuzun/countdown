@@ -12,10 +12,9 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
         this.hour = 0;
         this.day = 0;
 
-        var $this = this;
         this.updateOutput();
         if (this.cfg.autoStart) {
-            $this.start();
+            this.start();
         }
 
     },
@@ -37,14 +36,11 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
         clearInterval(this.interval);
     },
 
-    convertType: function(value) {
-        if (value < 10) {
-            return "0" + value;
-        } else {
-            return value;
-        }
-    },
-
+    formatZero: function(type){
+        type = type < 10 ? '0' + type : type;
+        return type;
+    },  
+        
     updateCounter: function() {
         this.getSecond();
         if (this.isReverse && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0) {
@@ -53,13 +49,10 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
     },
 
     updateOutput: function() {
-        this.jq.text(this.convertType(this.day) 
-                + ":" 
-                + this.convertType(this.hour) 
-                + ":" 
-                + this.convertType(this.minute) 
-                + ":" 
-                + this.convertType(this.second));
+        this.jq.text(
+            this.formatZero(this.minute) + ":" +
+            this.formatZero(this.second)
+        ); 
     },
 
     getSecond: function() {
