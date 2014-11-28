@@ -61,13 +61,13 @@ public class TimerRenderer extends CoreRenderer {
         Locale locale = timer.calculateLocale(context);
 
         wb.initWithDomReady("Timer", timer.resolveWidgetVar(), clientId);
-        wb.attr("reverse", timer.isReverse())
+        wb.attr("countdown", timer.isCountdown())
                 .attr("autoStart", timer.isAutoStart())
                 .attr("locale", locale.toString())
                 .attr("finishTime", finishTime);
 
-        if (timer.isReverse() && finishTime.equals("infinite")) {
-            throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + " reverse:" + timer.isReverse() + " & " + "finisTime:" + finishTime);
+        if (timer.isCountdown() && finishTime.equals("infinite")) {
+            throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + " countdown:" + timer.isCountdown() + " & " + "finisTime:" + finishTime);
         }
 
         encodeClientBehaviors(context, timer);
