@@ -43,15 +43,14 @@
         <attribute>
             <name>locale</name>
             <required>false</required>
-            <type>java.lang.String</type>
-            <defaultValue>en</defaultValue>
+            <type>java.lang.Object</type>
             <description> Locale to be used for labels.</description>
         </attribute>
          <attribute>
-            <name>autostart</name>
+            <name>autoStart</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
+            <defaultValue>true</defaultValue>
             <description>Default value is false.If is true, it'll autostart.</description>
         </attribute>
     </attributes>

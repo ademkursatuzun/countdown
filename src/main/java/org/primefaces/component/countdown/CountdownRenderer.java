@@ -62,10 +62,14 @@ public class CountdownRenderer extends CoreRenderer {
 
         wb.init("Countdown", countdown.resolveWidgetVar(), clientId);
         wb.attr("pattern", countdown.getPattern(), null)
-                .attr("reverse", countdown.isReverse(), false)
-                .attr("autoStart", countdown.isAutostart(), false)
+                .attr("reverse", countdown.isReverse())
+                .attr("autoStart", countdown.isAutoStart())
                 .attr("locale", locale.toString())
-                .attr("finishTime", finishTime, "infinite");
+                .attr("finishTime", finishTime);
+
+        if (countdown.isReverse() && finishTime.equals("infinite")) {
+            throw new UnsupportedOperationException(countdown.getClass() + " not supported operation:" + " reverse:" + countdown.isReverse() + " & " + "finisTime:" + finishTime);
+        }
 
         wb.finish();
 
