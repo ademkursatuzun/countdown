@@ -10,10 +10,11 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
 
         this.isReverse = this.cfg.reverse;
 
-        this.second = 50;
+        this.second = 0;
         this.minute = 0;
-        this.hour = 0;
-        this.day = 0;
+        this.hour   = 0;
+        this.day    = 0;
+        this.matchPattern(this.cfg.finishTime);
 
         var $this = this;
         this.updateOutput();
@@ -54,6 +55,41 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
                 this.formatZero(this.minute) + ":" +
                 this.formatZero(this.second)
                 );
+    },
+    matchPattern: function(value){ //TODO improve it.
+        var timeList = value.split(":");
+        var timeListLength = timeList.length;
+        switch(timeListLength) {
+        case 1:
+            this.second = parseInt(timeList[0]);
+            this.minute = 0;
+            this.hour   = 0;
+            this.day    = 0;
+            break;
+        case 2:
+            console.log("case2");
+            this.second = parseInt(timeList[1]);
+            this.minute = parseInt(timeList[0]);
+            this.hour   = 0;
+            this.day    = 0;
+            
+            break;
+        case 3:
+            this.second = parseInt(timeList[2]);
+            this.minute = parseInt(timeList[1]);
+            this.hour   = parseInt(timeList[0]);
+            this.day    = 0;
+            break;
+        case 4:
+            this.second = parseInt(timeList[3]);
+            this.minute = parseInt(timeList[2]);
+            this.hour   = parseInt(timeList[1]);
+            this.day    = parseInt(timeList[0]);
+            break;
+        default:
+           console.log("default");
+           break;
+    } 
     },
     getSecond: function() {
         if (this.isReverse) {
