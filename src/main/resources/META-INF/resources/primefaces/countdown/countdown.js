@@ -6,22 +6,26 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.isReverse = this.cfg.reverse;
-
-        this.second = 0;
+        this.cfg=cfg;
+        this.second = 50;
         this.minute = 0;
         this.hour = 0;
         this.day = 0;
 
+        var $this = this;
         this.updateOutput();
         if (this.cfg.autoStart) {
-            this.start();
+            $this.start();
         }
 
     },
 
-    refresh: function(cfg) {
+    refresh: function() {
         clearInterval(this.interval);
-        this.init(cfg);
+        this.init(this.cfg);
+        if (this.cfg.autoStart) {
+            this.stop();
+        }
     },
 
     start: function() {
