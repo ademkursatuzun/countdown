@@ -1,12 +1,15 @@
 /**
- *  PrimeFaces Countdown Widget 
+ *  PrimeFaces Timer Widget 
  */
 
-PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
+
+        this.cfg = cfg;
+
         this.isReverse = this.cfg.reverse;
-        this.cfg=cfg;
+
         this.second = 50;
         this.minute = 0;
         this.hour = 0;
@@ -19,7 +22,6 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
         }
 
     },
-
     refresh: function() {
         clearInterval(this.interval);
         this.init(this.cfg);
@@ -27,7 +29,6 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
             this.stop();
         }
     },
-
     start: function() {
         var $this = this;
         this.interval = setInterval(function() {
@@ -35,30 +36,25 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
             $this.updateOutput();
         }, 1000);
     },
-
     stop: function() {
         clearInterval(this.interval);
     },
-
-    formatZero: function(type){
+    formatZero: function(type) {
         type = type < 10 ? '0' + type : type;
         return type;
-    },  
-        
+    },
     updateCounter: function() {
         this.getSecond();
         if (this.isReverse && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0) {
             this.stop();
         }
     },
-
     updateOutput: function() {
         this.jq.text(
-            this.formatZero(this.minute) + ":" +
-            this.formatZero(this.second)
-        ); 
+                this.formatZero(this.minute) + ":" +
+                this.formatZero(this.second)
+                );
     },
-
     getSecond: function() {
         if (this.isReverse) {
             if (this.second === 0) {
@@ -77,7 +73,6 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
 
         }
     },
-
     getMinute: function() {
         if (this.isReverse) {
             if (this.minute === 0) {
@@ -96,7 +91,6 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
 
         }
     },
-
     getHour: function() {
         if (this.isReverse) {
             if (this.hour === 0) {
@@ -115,10 +109,10 @@ PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
 
         }
     },
-
     getDay: function() {
         if (this.isReverse) {
-            if (this.day === 0) {} else {
+            if (this.day === 0) {
+            } else {
                 this.day = this.day - 1;
             }
         } else {

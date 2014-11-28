@@ -5,15 +5,15 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-    <tag>countdown</tag>
-    <tagClass>org.primefaces.component.countdown.Countdown</tagClass>
-    <componentClass>org.primefaces.component.countdown.Countdown</componentClass>
-    <componentType>org.primefaces.component.Countdown</componentType>
+    <tag>timer</tag>
+    <tagClass>org.primefaces.component.timer.Timer</tagClass>
+    <componentClass>org.primefaces.component.timer.Timer</componentClass>
+    <componentType>org.primefaces.component.Timer</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
-    <rendererType>org.primefaces.component.CountdownRenderer</rendererType>
-    <rendererClass>org.primefaces.component.countdown.CountdownRenderer</rendererClass>
+    <rendererType>org.primefaces.component.TimerRenderer</rendererType>
+    <rendererClass>org.primefaces.component.timer.TimerRenderer</rendererClass>
     <parent>javax.faces.component.UIOutput</parent>
-    <description>Countdown displays passed time.</description>
+    <description>Timer displays passed time.</description>
     <interfaces>
         <interface>
             <name>org.primefaces.component.api.Widget</name>
@@ -25,12 +25,6 @@
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;
-        <attribute>
-            <name>pattern</name>
-            <required>false</required>
-            <type>String</type>
-            <description>Special Datetime format.</description>
-        </attribute>
         <attribute>
             <name>reverse</name>
             <required>false</required>
@@ -61,7 +55,7 @@
     </attributes>
     <resources>
         <resource>
-            <name>countdown/countdown.css</name>
+            <name>timer/timer.css</name>
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
@@ -70,7 +64,7 @@
             <name>primefaces.js</name>
         </resource>
         <resource>
-            <name>countdown/countdown.js</name>
+            <name>timer/timer.js</name>
         </resource>
     </resources>
 </component>

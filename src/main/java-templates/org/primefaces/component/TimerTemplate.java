@@ -1,7 +1,7 @@
 import javax.faces.context.FacesContext;
 import org.primefaces.util.ComponentUtils;
 
-public final static String STYLE_CLASS = "ui-countdown ui-widget ui-widget-header ui-corner-all";
+public final static String STYLE_CLASS = "ui-timer ui-widget ui-widget-header ui-corner-all";
 
         private java.util.Locale calculatedLocale;
         private java.util.TimeZone appropriateTimeZone;
@@ -16,7 +16,7 @@ public final static String STYLE_CLASS = "ui-countdown ui-widget ui-widget-heade
 				else if(userLocale instanceof java.util.Locale)
 					calculatedLocale = (java.util.Locale) userLocale;
 				else
-					throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for countdown:" + this.getClientId(facesContext));
+					throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for timer:" + this.getClientId(facesContext));
 			} else {
 				calculatedLocale = facesContext.getViewRoot().getLocale();
 			}
