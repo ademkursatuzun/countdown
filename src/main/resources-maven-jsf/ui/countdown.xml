@@ -18,8 +18,13 @@
         <interface>
             <name>org.primefaces.component.api.Widget</name>
         </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
     </interfaces>
     <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>pattern</name>
             <required>false</required>
@@ -46,7 +51,7 @@
             <type>java.lang.Object</type>
             <description> Locale to be used for labels.</description>
         </attribute>
-         <attribute>
+        <attribute>
             <name>autoStart</name>
             <required>false</required>
             <type>java.lang.Boolean</type>

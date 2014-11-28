@@ -60,7 +60,7 @@ public class CountdownRenderer extends CoreRenderer {
         String finishTime = countdown.getFinishTime();
         Locale locale = countdown.calculateLocale(context);
 
-        wb.init("Countdown", countdown.resolveWidgetVar(), clientId);
+        wb.initWithDomReady("Countdown", countdown.resolveWidgetVar(), clientId);
         wb.attr("pattern", countdown.getPattern(), null)
                 .attr("reverse", countdown.isReverse())
                 .attr("autoStart", countdown.isAutoStart())
@@ -70,6 +70,8 @@ public class CountdownRenderer extends CoreRenderer {
         if (countdown.isReverse() && finishTime.equals("infinite")) {
             throw new UnsupportedOperationException(countdown.getClass() + " not supported operation:" + " reverse:" + countdown.isReverse() + " & " + "finisTime:" + finishTime);
         }
+
+        encodeClientBehaviors(context, countdown);
 
         wb.finish();
 
