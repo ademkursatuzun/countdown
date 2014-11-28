@@ -5,8 +5,128 @@
 PrimeFaces.widget.Countdown = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
+        this.isReverse = this.cfg.reverse;
 
-        alert("Countdown Locale Attr. : <" + this.cfg.locale + "> Test Ok!");
+        this.second = 0;
+        this.minute = 0;
+        this.hour = 0;
+        this.day = 0;
 
+        var $this = this;
+        this.updateOutput();
+        if (this.cfg.autoStart) {
+            $this.start();
+        }
+
+    },
+
+    refresh: function(cfg) {
+        clearInterval(this.interval);
+        this.init(cfg);
+    },
+
+    start: function() {
+        var $this = this;
+        this.interval = setInterval(function() {
+            $this.updateCounter();
+            $this.updateOutput();
+        }, 1000);
+    },
+
+    stop: function() {
+        clearInterval(this.interval);
+    },
+
+    convertType: function(value) {
+        if (value < 10) {
+            return "0" + value;
+        } else {
+            return value;
+        }
+    },
+
+    updateCounter: function() {
+        this.getSecond();
+        if (this.isReverse && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0) {
+            this.stop();
+        }
+    },
+
+    updateOutput: function() {
+        this.jq.text(this.convertType(this.day) 
+                + ":" 
+                + this.convertType(this.hour) 
+                + ":" 
+                + this.convertType(this.minute) 
+                + ":" 
+                + this.convertType(this.second));
+    },
+
+    getSecond: function() {
+        if (this.isReverse) {
+            if (this.second === 0) {
+                this.second = 59;
+                this.getMinute();
+            } else {
+                this.second = this.second - 1;
+            }
+        } else {
+            if (this.second === 59) {
+                this.second = 0;
+                this.getMinute();
+            } else {
+                this.second = this.second + 1;
+            }
+
+        }
+    },
+
+    getMinute: function() {
+        if (this.isReverse) {
+            if (this.minute === 0) {
+                this.minute = 59;
+                this.getHour();
+            } else {
+                this.minute = this.minute - 1;
+            }
+        } else {
+            if (this.minute === 59) {
+                this.minute = 0;
+                this.getHour();
+            } else {
+                this.minute = this.minute + 1;
+            }
+
+        }
+    },
+
+    getHour: function() {
+        if (this.isReverse) {
+            if (this.hour === 0) {
+                this.hour = 23;
+                this.getDay();
+            } else {
+                this.hour = this.hour - 1;
+            }
+        } else {
+            if (this.hour === 23) {
+                this.minute = 0;
+                this.getHourDay();
+            } else {
+                this.hour = this.hour + 1;
+            }
+
+        }
+    },
+
+    getDay: function() {
+        if (this.isReverse) {
+            if (this.day === 0) {} else {
+                this.day = this.day - 1;
+            }
+        } else {
+            this.day = this.day - 1;
+        }
     }
+
 });
