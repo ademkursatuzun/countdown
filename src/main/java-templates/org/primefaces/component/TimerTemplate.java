@@ -25,14 +25,14 @@ public final static String STYLE_CLASS = "ui-timer ui-widget ui-widget-header ui
 		return calculatedLocale;
 	}
         
-        public boolean patternValidaiton(String finishTime) {
+        public boolean patternValidaiton(String value) {
         boolean validationValue = false;
-        String[] timeList = finishTime.split(":");
-        if (timeList[0].equals(finishTime) && finishTime.length() > 0) {
+        String[] timeList = value.split(":");
+        if (timeList[0].equals(value) && value.length() > 0) {
             validationValue = true;
         } else {
-            int timeListLength = finishTime.replaceAll(":", "").length();
-            if ((finishTime.length() - timeListLength + 1) != timeList.length) {
+            int timeListLength = value.replaceAll(":", "").length();
+            if ((value.length() - timeListLength + 1) != timeList.length) {
                 validationValue = false;
             } else {
                 if (timeList.length <= 4) {

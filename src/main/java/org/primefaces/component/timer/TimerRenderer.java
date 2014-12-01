@@ -57,26 +57,26 @@ public class TimerRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Timer timer) throws IOException {
         String clientId = timer.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        String finishTime = timer.getFinishTime();
+        String value = timer.getValue();
         Locale locale = timer.calculateLocale(context);
 
         wb.initWithDomReady("Timer", timer.resolveWidgetVar(), clientId);
         wb.attr("countdown", timer.isCountdown())
                 .attr("autoStart", timer.isAutoStart())
                 .attr("locale", locale.toString())
-                .attr("onlyDigital", timer.isOnlyDigital());
+                .attr("mode", timer.getMode());
 
-        if (finishTime.equals("infinite")) {
+        if (value.equals("infinite")) {
             if (timer.isCountdown()) {
-                throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + " countdown:" + timer.isCountdown() + " & " + "finisTime:" + finishTime);
+                throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + " countdown:" + timer.isCountdown() + " & " + "value:" + value);
             } else {
-                wb.attr("finishTime", finishTime, "infinite");
+                wb.attr("value", value);
             }
         } else {
-            if (timer.patternValidaiton(finishTime)) {
-                wb.attr("finishTime", finishTime);
+            if (timer.patternValidaiton(value)) {
+                wb.attr("value", value);
             } else {
-                throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + timer.getFinishTime());
+                throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + timer.getValue());
             }
         }
 

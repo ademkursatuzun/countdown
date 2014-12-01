@@ -33,15 +33,15 @@
             <description>When is enabled, that is counting reverse.   </description>
         </attribute>
         <attribute>
-            <name>onlyDigital</name>
+            <name>mode</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
+            <type>java.lang.String</type>
+            <defaultValue>simple</defaultValue>
             <description>When is true, that is showing digital format.</description>
         </attribute>
         <attribute>
-            <name>finishTime</name>
-            <required>false</required>
+            <name>value</name>
+            <required>true</required>
             <type>java.lang.String</type>
             <defaultValue>infinite</defaultValue>
             <description>If is not infinite that is matching with pattern for callback ajax .</description>

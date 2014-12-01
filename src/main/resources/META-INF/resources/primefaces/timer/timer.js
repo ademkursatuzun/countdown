@@ -2,6 +2,30 @@
  *  PrimeFaces Timer Widget 
  */
 
+PrimeFaces.times = {
+    'en': {
+        day: "day",
+        hour: "hour",
+        minute: "minute",
+        second: "second",
+        days: "days",
+        hours: "hours",
+        minutes: "minutes",
+        seconds: "seconds"
+    },
+    'tr': {
+        day: "gün",
+        hour: "saat",
+        minute: "dakika",
+        second: "saniye",
+        days: "gün",
+        hours: "saat",
+        minutes: "dakika",
+        seconds: "saniye"
+    }
+
+};
+
 PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
@@ -9,16 +33,18 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         this.cfg = cfg;
 
         this.isCountdown = this.cfg.countdown;
-        this.isOnlyDigital = this.cfg.onlyDigital;
+        this.mode = this.cfg.mode;
 
         this.second = 0;
         this.minute = 0;
         this.hour = 0;
         this.day = 0;
 
-        if (!this.cfg.finishTime === "infinite") {
-            this.matchPattern(this.cfg.finishTime);
+        if (!(this.cfg.value === "infinite")) {
+            this.matchPattern(this.cfg.value);
         }
+
+        this.configureLocale();
 
         this.started = false;
 
@@ -28,6 +54,15 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             $this.start();
         }
 
+    },
+    configureLocale: function() {
+        var localeSettings = PrimeFaces.times[this.cfg.locale];
+
+        if (localeSettings) {
+            for (var setting in localeSettings) {
+                this.cfg[setting] = localeSettings[setting];
+            }
+        }
     },
     refresh: function() {
         clearInterval(this.interval);
@@ -52,8 +87,8 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         clearInterval(this.interval);
         this.started = false;
     },
-    formatPlular: function(val, type) { //this.second,second
-        val = val > 1 || val === 0 ? type + 's' : type;
+    formatPlular: function(val, type, types) { //this.second,second
+        val = val > 1 || val === 0 ? types : type;
         return val;
     },
     formatZero: function(type) {
@@ -68,21 +103,20 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
     },
     updateOutput: function() {
 
-        if (this.isOnlyDigital) {
+        if (this.mode === "simple") {
             this.jq.text(
                     this.formatZero(this.day) + ":" +
                     this.formatZero(this.hour) + ":" +
                     this.formatZero(this.minute) + ":" +
                     this.formatZero(this.second));
-        } else {
+        } else if (this.mode === "advanced") {
             this.jq.text(
-                    this.day + " " + this.formatPlular(this.day, "day") + ", " +
-                    this.hour + " " + this.formatPlular(this.hour, "hour") + ", " +
-                    this.minute + " " + this.formatPlular(this.minute, "minute") + ", " +
-                    this.second + " " + this.formatPlular(this.second, "second")
+                    this.day + " " + this.formatPlular(this.day, this.cfg.day, this.cfg.days) + ", " +
+                    this.hour + " " + this.formatPlular(this.hour, this.cfg.hour, this.cfg.hours) + ", " +
+                    this.minute + " " + this.formatPlular(this.minute, this.cfg.minute, this.cfg.minutes) + ", " +
+                    this.second + " " + this.formatPlular(this.second, this.cfg.second, this.cfg.seconds)
                     );
         }
-
 
     },
     leapTime: function() {
@@ -100,6 +134,7 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     matchPattern: function(value) {
+
         var timeList = value.split(":");
         var timeListLength = timeList.length;
 
