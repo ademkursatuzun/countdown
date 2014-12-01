@@ -14,7 +14,12 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         this.minute = 0;
         this.hour = 0;
         this.day = 0;
-        this.matchPattern(this.cfg.finishTime);
+
+        if (!this.cfg.finishTime === "infinite") {
+            this.matchPattern(this.cfg.finishTime);
+        }
+
+        this.started = false;
 
         var $this = this;
         this.updateOutput();
@@ -31,16 +36,20 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     start: function() {
-        if (!(this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0)) {
-            var $this = this;
-            this.interval = setInterval(function() {
-                $this.updateCounter();
-                $this.updateOutput();
-            }, 1000);
+        if (!this.started) {
+            if (!(this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0)) {
+                var $this = this;
+                this.interval = setInterval(function() {
+                    $this.updateCounter();
+                    $this.updateOutput();
+                }, 1000);
+            }
+            this.started = true;
         }
     },
     stop: function() {
         clearInterval(this.interval);
+        this.started = false;
     },
     formatZero: function(type) {
         type = type < 10 ? '0' + type : type;
@@ -54,61 +63,62 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
     },
     updateOutput: function() {
         this.jq.text(
+                this.formatZero(this.day) + ":" +
+                this.formatZero(this.hour) + ":" +
                 this.formatZero(this.minute) + ":" +
                 this.formatZero(this.second)
                 );
     },
-    leapTime: function(){
-        if(this.second > 59){
+    leapTime: function() {
+        if (this.second > 59) {
             this.second = (this.second % 60);
             this.minute++;
         }
-        if(this.minute > 59){
+        if (this.minute > 59) {
             this.minute = (this.minute % 60);
             this.hour++;
         }
-        if(this.hour > 59){
-             this.hour = (this.hour % 24);
-             this.day++;
+        if (this.hour > 59) {
+            this.hour = (this.hour % 24);
+            this.day++;
         }
     },
-    matchPattern: function(value){
+    matchPattern: function(value) {
         var timeList = value.split(":");
         var timeListLength = timeList.length;
 
-        switch(timeListLength) {
-        case 1:
-            this.second = parseInt(timeList[0]);
-            this.minute = 0;
-            this.hour   = 0;
-            this.day    = 0;
-            this.leapTime();
-            break;
-        case 2:
-            this.second = parseInt(timeList[1]);
-            this.minute = parseInt(timeList[0]);
-            this.hour   = 0;
-            this.day    = 0;
-            this.leapTime();
-            break;
-        case 3:
-            this.second = parseInt(timeList[2]);
-            this.minute = parseInt(timeList[1]);
-            this.hour   = parseInt(timeList[0]);
-            this.day    = 0;
-            this.leapTime();
-            break;
-        case 4:
-            this.second = parseInt(timeList[3]);
-            this.minute = parseInt(timeList[2]);
-            this.hour   = parseInt(timeList[1]);
-            this.day    = parseInt(timeList[0]);
-            this.leapTime();
-            break;
-        default:
-           console.log("default");
-           break;
-    } 
+        switch (timeListLength) {
+            case 1:
+                this.second = parseInt(timeList[0]);
+                this.minute = 0;
+                this.hour = 0;
+                this.day = 0;
+                this.leapTime();
+                break;
+            case 2:
+                this.second = parseInt(timeList[1]);
+                this.minute = parseInt(timeList[0]);
+                this.hour = 0;
+                this.day = 0;
+                this.leapTime();
+                break;
+            case 3:
+                this.second = parseInt(timeList[2]);
+                this.minute = parseInt(timeList[1]);
+                this.hour = parseInt(timeList[0]);
+                this.day = 0;
+                this.leapTime();
+                break;
+            case 4:
+                this.second = parseInt(timeList[3]);
+                this.minute = parseInt(timeList[2]);
+                this.hour = parseInt(timeList[1]);
+                this.day = parseInt(timeList[0]);
+                this.leapTime();
+                break;
+            default:
+                break;
+        }
     },
     getSecond: function() {
         if (this.isCountdown) {
