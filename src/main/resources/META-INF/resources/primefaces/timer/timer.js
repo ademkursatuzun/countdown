@@ -58,37 +58,57 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
                 this.formatZero(this.second)
                 );
     },
-    matchPattern: function(value) { //TODO improve it.
+    leapTime: function(){
+        if(this.second > 59){
+            this.second = (this.second % 60);
+            this.minute++;
+        }
+        if(this.minute > 59){
+            this.minute = (this.minute % 60);
+            this.hour++;
+        }
+        if(this.hour > 59){
+             this.hour = (this.hour % 24);
+             this.day++;
+        }
+    },
+    matchPattern: function(value){
         var timeList = value.split(":");
         var timeListLength = timeList.length;
-        switch (timeListLength) {
-            case 1:
-                this.second = parseInt(timeList[0]);
-                this.minute = 0;
-                this.hour = 0;
-                this.day = 0;
-                break;
-            case 2:
-                this.second = parseInt(timeList[1]);
-                this.minute = parseInt(timeList[0]);
-                this.hour = 0;
-                this.day = 0;
-                break;
-            case 3:
-                this.second = parseInt(timeList[2]);
-                this.minute = parseInt(timeList[1]);
-                this.hour = parseInt(timeList[0]);
-                this.day = 0;
-                break;
-            case 4:
-                this.second = parseInt(timeList[3]);
-                this.minute = parseInt(timeList[2]);
-                this.hour = parseInt(timeList[1]);
-                this.day = parseInt(timeList[0]);
-                break;
-            default:
-                break;
-        }
+
+        switch(timeListLength) {
+        case 1:
+            this.second = parseInt(timeList[0]);
+            this.minute = 0;
+            this.hour   = 0;
+            this.day    = 0;
+            this.leapTime();
+            break;
+        case 2:
+            this.second = parseInt(timeList[1]);
+            this.minute = parseInt(timeList[0]);
+            this.hour   = 0;
+            this.day    = 0;
+            this.leapTime();
+            break;
+        case 3:
+            this.second = parseInt(timeList[2]);
+            this.minute = parseInt(timeList[1]);
+            this.hour   = parseInt(timeList[0]);
+            this.day    = 0;
+            this.leapTime();
+            break;
+        case 4:
+            this.second = parseInt(timeList[3]);
+            this.minute = parseInt(timeList[2]);
+            this.hour   = parseInt(timeList[1]);
+            this.day    = parseInt(timeList[0]);
+            this.leapTime();
+            break;
+        default:
+           console.log("default");
+           break;
+    } 
     },
     getSecond: function() {
         if (this.isCountdown) {
