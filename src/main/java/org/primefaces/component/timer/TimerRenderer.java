@@ -63,7 +63,8 @@ public class TimerRenderer extends CoreRenderer {
         wb.initWithDomReady("Timer", timer.resolveWidgetVar(), clientId);
         wb.attr("countdown", timer.isCountdown())
                 .attr("autoStart", timer.isAutoStart())
-                .attr("locale", locale.toString());
+                .attr("locale", locale.toString())
+                .attr("onlyDigital", timer.isOnlyDigital());
 
         if (finishTime.equals("infinite")) {
             if (timer.isCountdown()) {

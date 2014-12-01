@@ -9,6 +9,7 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         this.cfg = cfg;
 
         this.isCountdown = this.cfg.countdown;
+        this.isOnlyDigital = this.cfg.onlyDigital;
 
         this.second = 0;
         this.minute = 0;
@@ -51,7 +52,7 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         clearInterval(this.interval);
         this.started = false;
     },
-    formatPlular: function(val, type){ //this.second,second
+    formatPlular: function(val, type) { //this.second,second
         val = val > 1 || val === 0 ? type + 's' : type;
         return val;
     },
@@ -66,18 +67,23 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     updateOutput: function() {
-        this.jq.text(
-            /*
-            this.formatZero(this.day) + ":" +
-            this.formatZero(this.hour)+ ":" +
-            this.formatZero(this.minute) + ":" +
-            this.formatZero(this.second)
-            */
-            this.day + " " + this.formatPlular(this.day,"day")+ ", " +
-            this.hour + " " + this.formatPlular(this.hour,"hour")+ ", " +
-            this.minute + " " + this.formatPlular(this.minute,"minute")+ ", " +
-            this.second + " " + this.formatPlular(this.second,"second")
-        );
+
+        if (this.isOnlyDigital) {
+            this.jq.text(
+                    this.formatZero(this.day) + ":" +
+                    this.formatZero(this.hour) + ":" +
+                    this.formatZero(this.minute) + ":" +
+                    this.formatZero(this.second));
+        } else {
+            this.jq.text(
+                    this.day + " " + this.formatPlular(this.day, "day") + ", " +
+                    this.hour + " " + this.formatPlular(this.hour, "hour") + ", " +
+                    this.minute + " " + this.formatPlular(this.minute, "minute") + ", " +
+                    this.second + " " + this.formatPlular(this.second, "second")
+                    );
+        }
+
+
     },
     leapTime: function() {
         if (this.second > 59) {

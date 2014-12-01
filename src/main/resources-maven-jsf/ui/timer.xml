@@ -26,11 +26,18 @@
         &standard_uicomponent_attributes;
         &widget_var_attribute;
         <attribute>
-            <name>reverse</name>
+            <name>countdown</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>When is enabled, that is counting reverse.   </description>
+        </attribute>
+        <attribute>
+            <name>onlyDigital</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>When is true, that is showing digital format.</description>
         </attribute>
         <attribute>
             <name>finishTime</name>
