@@ -24,3 +24,24 @@ public final static String STYLE_CLASS = "ui-timer ui-widget ui-widget-header ui
 		
 		return calculatedLocale;
 	}
+        
+        public boolean patternValidaiton(String finishTime) {
+        boolean validationValue = false;
+        String[] timeList = finishTime.split(":");
+        if (timeList[0].equals(finishTime) && finishTime.length() > 0) {
+            validationValue = true;
+        } else {
+            int timeListLength = finishTime.replaceAll(":", "").length();
+            if ((finishTime.length() - timeListLength + 1) != timeList.length) {
+                validationValue = false;
+            } else {
+                if (timeList.length <= 4) {
+                    validationValue = true;
+                } else {
+                    validationValue = false;
+                }
+            }
+        }
+
+        return validationValue;
+    }

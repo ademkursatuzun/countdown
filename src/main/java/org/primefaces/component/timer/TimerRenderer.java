@@ -63,11 +63,20 @@ public class TimerRenderer extends CoreRenderer {
         wb.initWithDomReady("Timer", timer.resolveWidgetVar(), clientId);
         wb.attr("countdown", timer.isCountdown())
                 .attr("autoStart", timer.isAutoStart())
-                .attr("locale", locale.toString())
-                .attr("finishTime", finishTime);
+                .attr("locale", locale.toString());
 
-        if (timer.isCountdown() && finishTime.equals("infinite")) {
-            throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + " countdown:" + timer.isCountdown() + " & " + "finisTime:" + finishTime);
+        if (finishTime.equals("infinite")) {
+            if (timer.isCountdown()) {
+                throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + " countdown:" + timer.isCountdown() + " & " + "finisTime:" + finishTime);
+            } else {
+                wb.attr("finishTime", finishTime, "infinite");
+            }
+        } else {
+            if (timer.patternValidaiton(finishTime)) {
+                wb.attr("finishTime", finishTime);
+            } else {
+                throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + timer.getFinishTime());
+            }
         }
 
         encodeClientBehaviors(context, timer);
