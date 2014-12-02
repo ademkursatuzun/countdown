@@ -26,7 +26,7 @@ PrimeFaces.times = {
 };
 
 PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
 
@@ -37,10 +37,10 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
 
         this.initCons();
 
-        if(!(this.cfg.value === "infinite")){ 
-            if(this.isCountdown){
-                 this.matchPattern(this.cfg.value);
-            }else{
+        if (this.cfg.value !== "infinite") {
+            if (this.isCountdown) {
+                this.matchPattern(this.cfg.value);
+            } else {
                 this.matchPattern(this.cfg.value);
                 this.secondf = this.second;
                 this.minutef = this.minute;
@@ -57,8 +57,8 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             $this.start();
         }
     },
-     ////////////////////////////////////Initilaze Constant and Locale ////////////////////////////////////
-    initCons: function(){
+    ////////////////////////////////////Initilaze Constant and Locale ////////////////////////////////////
+    initCons: function() {
         this.second = 0;
         this.minute = 0;
         this.hour = 0;
@@ -72,7 +72,7 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-     ////////////////////////////////////Display Label ////////////////////////////////////
+    ////////////////////////////////////Display Label ////////////////////////////////////
     start: function() {
         if (!this.started) {
             if (!(this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0)) {
@@ -96,13 +96,12 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         clearInterval(this.interval);
         this.started = false;
     },
-    
+
     updateCounter: function() {
         this.getSecond();
-        if(!this.isCountdown && this.day === this.dayf && this.hour === this.hourf && this.minute === this.minutef && this.second === this.secondf){
+        if (!this.isCountdown && this.day === this.dayf && this.hour === this.hourf && this.minute === this.minutef && this.second === this.secondf) {
             this.stop();
-        }
-        else if(this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0) {
+        } else if (this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0) {
             this.stop();
         }
     },
@@ -121,17 +120,17 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
                 this.second + " " + this.formatPlular(this.second, this.cfg.second, this.cfg.seconds));
         }
     },
-    
+
     ///////////////////////////////////Format plular and zero ////////////////////////////////////
     formatPlular: function(val, type, types) { //this.second,second,seconds
         val = val > 1 || val === 0 ? types : type;
         return val;
     },
-    formatZero: function(type) {//this.second
+    formatZero: function(type) { //this.second
         type = type < 10 ? '0' + type : type;
         return type;
     },
-     ////////////////////////////////Split the value ////////////////////////////////////
+    ////////////////////////////////Split the value ////////////////////////////////////
     matchPattern: function(value) {
         var timeList = value.split(":");
         var timeListLength = timeList.length;
@@ -176,8 +175,8 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             this.day++;
         }
     },
-     ////////////////////////////  Calculate Second,Minute,Hour and Day ////////////////////////////////////
-    
+    ////////////////////////////  Calculate Second,Minute,Hour and Day ////////////////////////////////////
+
     getSecond: function() {
         if (this.isCountdown) {
             if (this.second === 0) {
@@ -231,8 +230,7 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
     },
     getDay: function() {
         if (this.isCountdown) {
-            if (this.day === 0) {
-            } else {
+            if (this.day === 0) {} else {
                 this.day = this.day - 1;
             }
         } else {
