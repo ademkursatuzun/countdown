@@ -236,6 +236,17 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         } else {
             this.day = this.day - 1;
         }
+    },
+    fireCompleteEvent: function() {
+        if (this.hasBehavior('complete')) {
+            this.cfg.behaviors['complete'].call(this);
+        }
+    },
+    hasBehavior: function(event) {
+        if (this.cfg.behaviors) {
+            return this.cfg.behaviors[event] != undefined;
+        }
+        return false;
     }
 
 });
