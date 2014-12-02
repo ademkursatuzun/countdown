@@ -122,8 +122,8 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
     },
 
     ///////////////////////////////////Format plular and zero ////////////////////////////////////
-    formatPlular: function(val, type, types) { //this.second,second,seconds
-        val = val > 1 || val === 0 ? types : type;
+    formatPlular: function(val, type, suffix) { //this.second,second,seconds
+        val = val > 1 || val === 0 ? suffix : type;
         return val;
     },
     formatZero: function(type) { //this.second
