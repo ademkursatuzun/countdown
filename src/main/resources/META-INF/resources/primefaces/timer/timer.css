@@ -1,3 +1,8 @@
+
 .ui-timer {
     padding: 4px 10px;
+    border-radius: 15px;
+    border: 3px solid #2980b9;
+    font-size: 150%;
 }
+  
