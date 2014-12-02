@@ -1,7 +1,6 @@
 /**
  *  PrimeFaces Timer Widget 
  */
-
 PrimeFaces.times = {
     'en': {
         day: "day",
@@ -27,6 +26,7 @@ PrimeFaces.times = {
 };
 
 PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
+    
     init: function(cfg) {
         this._super(cfg);
 
@@ -35,42 +35,44 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         this.isCountdown = this.cfg.countdown;
         this.mode = this.cfg.mode;
 
-        this.second = 0;
-        this.minute = 0;
-        this.hour = 0;
-        this.day = 0;
+        this.initCons();
 
-        if (!(this.cfg.value === "infinite")) {
-            this.matchPattern(this.cfg.value);
+        if(!(this.cfg.value === "infinite")){ 
+            if(this.isCountdown){
+                 this.matchPattern(this.cfg.value);
+            }else{
+                this.matchPattern(this.cfg.value);
+                this.secondf = this.second;
+                this.minutef = this.minute;
+                this.hourf = this.hour;
+                this.dayf = this.day;
+                this.initCons();
+            }
         }
-
         this.configureLocale();
-
         this.started = false;
-
         var $this = this;
         this.updateOutput();
         if (this.cfg.autoStart) {
             $this.start();
         }
-
+    },
+     ////////////////////////////////////Initilaze Constant and Locale ////////////////////////////////////
+    initCons: function(){
+        this.second = 0;
+        this.minute = 0;
+        this.hour = 0;
+        this.day = 0;
     },
     configureLocale: function() {
         var localeSettings = PrimeFaces.times[this.cfg.locale];
-
         if (localeSettings) {
             for (var setting in localeSettings) {
                 this.cfg[setting] = localeSettings[setting];
             }
         }
     },
-    refresh: function() {
-        clearInterval(this.interval);
-        this.init(this.cfg);
-        if (this.cfg.autoStart) {
-            this.stop();
-        }
-    },
+     ////////////////////////////////////Display Label ////////////////////////////////////
     start: function() {
         if (!this.started) {
             if (!(this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0)) {
@@ -83,41 +85,82 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             this.started = true;
         }
     },
+    refresh: function() {
+        clearInterval(this.interval);
+        this.init(this.cfg);
+        if (this.cfg.autoStart) {
+            this.stop();
+        }
+    },
     stop: function() {
         clearInterval(this.interval);
         this.started = false;
     },
-    formatPlular: function(val, type, types) { //this.second,second
-        val = val > 1 || val === 0 ? types : type;
-        return val;
-    },
-    formatZero: function(type) {
-        type = type < 10 ? '0' + type : type;
-        return type;
-    },
+    
     updateCounter: function() {
         this.getSecond();
-        if (this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0) {
+        if(!this.isCountdown && this.day === this.dayf && this.hour === this.hourf && this.minute === this.minutef && this.second === this.secondf){
+            this.stop();
+        }
+        else if(this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0) {
             this.stop();
         }
     },
     updateOutput: function() {
-
         if (this.mode === "simple") {
             this.jq.text(
-                    this.formatZero(this.day) + ":" +
-                    this.formatZero(this.hour) + ":" +
-                    this.formatZero(this.minute) + ":" +
-                    this.formatZero(this.second));
+                this.formatZero(this.day) + ":" +
+                this.formatZero(this.hour) + ":" +
+                this.formatZero(this.minute) + ":" +
+                this.formatZero(this.second));
         } else if (this.mode === "advanced") {
             this.jq.text(
-                    this.day + " " + this.formatPlular(this.day, this.cfg.day, this.cfg.days) + ", " +
-                    this.hour + " " + this.formatPlular(this.hour, this.cfg.hour, this.cfg.hours) + ", " +
-                    this.minute + " " + this.formatPlular(this.minute, this.cfg.minute, this.cfg.minutes) + ", " +
-                    this.second + " " + this.formatPlular(this.second, this.cfg.second, this.cfg.seconds)
-                    );
+                this.day + " " + this.formatPlular(this.day, this.cfg.day, this.cfg.days) + ", " +
+                this.hour + " " + this.formatPlular(this.hour, this.cfg.hour, this.cfg.hours) + ", " +
+                this.minute + " " + this.formatPlular(this.minute, this.cfg.minute, this.cfg.minutes) + ", " +
+                this.second + " " + this.formatPlular(this.second, this.cfg.second, this.cfg.seconds));
         }
-
+    },
+    
+    ///////////////////////////////////Format plular and zero ////////////////////////////////////
+    formatPlular: function(val, type, types) { //this.second,second,seconds
+        val = val > 1 || val === 0 ? types : type;
+        return val;
+    },
+    formatZero: function(type) {//this.second
+        type = type < 10 ? '0' + type : type;
+        return type;
+    },
+     ////////////////////////////////Split the value ////////////////////////////////////
+    matchPattern: function(value) {
+        var timeList = value.split(":");
+        var timeListLength = timeList.length;
+        switch (timeListLength) {
+            case 1:
+                this.second = parseInt(timeList[0]);
+                this.leapTime();
+                break;
+            case 2:
+                this.second = parseInt(timeList[1]);
+                this.minute = parseInt(timeList[0]);
+                this.leapTime();
+                break;
+            case 3:
+                this.second = parseInt(timeList[2]);
+                this.minute = parseInt(timeList[1]);
+                this.hour = parseInt(timeList[0]);
+                this.leapTime();
+                break;
+            case 4:
+                this.second = parseInt(timeList[3]);
+                this.minute = parseInt(timeList[2]);
+                this.hour = parseInt(timeList[1]);
+                this.day = parseInt(timeList[0]);
+                this.leapTime();
+                break;
+            default:
+                break;
+        }
     },
     leapTime: function() {
         if (this.second > 59) {
@@ -133,44 +176,8 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             this.day++;
         }
     },
-    matchPattern: function(value) {
-
-        var timeList = value.split(":");
-        var timeListLength = timeList.length;
-
-        switch (timeListLength) {
-            case 1:
-                this.second = parseInt(timeList[0]);
-                this.minute = 0;
-                this.hour = 0;
-                this.day = 0;
-                this.leapTime();
-                break;
-            case 2:
-                this.second = parseInt(timeList[1]);
-                this.minute = parseInt(timeList[0]);
-                this.hour = 0;
-                this.day = 0;
-                this.leapTime();
-                break;
-            case 3:
-                this.second = parseInt(timeList[2]);
-                this.minute = parseInt(timeList[1]);
-                this.hour = parseInt(timeList[0]);
-                this.day = 0;
-                this.leapTime();
-                break;
-            case 4:
-                this.second = parseInt(timeList[3]);
-                this.minute = parseInt(timeList[2]);
-                this.hour = parseInt(timeList[1]);
-                this.day = parseInt(timeList[0]);
-                this.leapTime();
-                break;
-            default:
-                break;
-        }
-    },
+     ////////////////////////////  Calculate Second,Minute,Hour and Day ////////////////////////////////////
+    
     getSecond: function() {
         if (this.isCountdown) {
             if (this.second === 0) {
@@ -186,7 +193,6 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             } else {
                 this.second = this.second + 1;
             }
-
         }
     },
     getMinute: function() {
@@ -204,7 +210,6 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             } else {
                 this.minute = this.minute + 1;
             }
-
         }
     },
     getHour: function() {
@@ -222,7 +227,6 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
             } else {
                 this.hour = this.hour + 1;
             }
-
         }
     },
     getDay: function() {
