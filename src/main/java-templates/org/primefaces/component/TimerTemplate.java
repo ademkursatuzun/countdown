@@ -1,7 +1,20 @@
 import javax.faces.context.FacesContext;
+import org.primefaces.util.Constants;
+import org.primefaces.event.CompleteEvent;
+import javax.el.ELContext;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
 import org.primefaces.util.ComponentUtils;
 
 public final static String STYLE_CLASS = "ui-timer ui-widget ui-widget-header ui-corner-all";
+
+private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("complete"));
 
         private java.util.Locale calculatedLocale;
         private java.util.TimeZone appropriateTimeZone;
@@ -25,7 +38,7 @@ public final static String STYLE_CLASS = "ui-timer ui-widget ui-widget-header ui
 		return calculatedLocale;
 	}
         
-        public boolean patternValidaiton(String value) {
+        public boolean patternValidation(String value) {
         boolean validationValue = false;
         String[] timeList = value.split(":");
         if (timeList[0].equals(value) && value.length() > 0) {
@@ -44,4 +57,34 @@ public final static String STYLE_CLASS = "ui-timer ui-widget ui-widget-header ui
         }
 
         return validationValue;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    private boolean isSelfRequest(FacesContext context) {
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+    }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        FacesContext context = getFacesContext();
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        String clientId = this.getClientId(context);
+
+        if(isSelfRequest(context)) {
+            AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+            FacesEvent wrapperEvent = null;
+            if(eventName.equals("complete")) {
+                wrapperEvent = new CompleteEvent(this, behaviorEvent.getBehavior());
+            }
+            wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            super.queueEvent(wrapperEvent);
+        }
+        else {
+            super.queueEvent(event);
+        }
     }

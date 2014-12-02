@@ -32,7 +32,7 @@ public class TimerRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        Timer timer = (Timer) component;
+        super.decodeBehaviors(context, component);
 
     }
 
@@ -73,7 +73,7 @@ public class TimerRenderer extends CoreRenderer {
                 wb.attr("value", value);
             }
         } else {
-            if (timer.patternValidaiton(value)) {
+            if (timer.patternValidation(value)) {
                 wb.attr("value", value);
             } else {
                 throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + timer.getValue());
