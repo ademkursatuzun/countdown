@@ -101,8 +101,10 @@ PrimeFaces.widget.Timer = PrimeFaces.widget.BaseWidget.extend({
         this.getSecond();
         if (!this.isCountdown && this.day === this.dayf && this.hour === this.hourf && this.minute === this.minutef && this.second === this.secondf) {
             this.stop();
+			this.fireCompleteEvent();
         } else if (this.isCountdown && this.day === 0 && this.hour === 0 && this.minute === 0 && this.second === 0) {
             this.stop();
+			this.fireCompleteEvent();
         }
     },
     updateOutput: function() {
