@@ -17,6 +17,7 @@ package org.primefaces.component.timer;
 
 import java.io.IOException;
 import java.util.Locale;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -40,8 +41,16 @@ public class TimerRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Timer timer = (Timer) component;
 
+        if (!(timer.getMode().equals("simple") || timer.getMode().equals("advanced"))) {
+            throw new FacesException("The value of 'mode' attribute must be 'simple' or 'advanced'. Default value is 'simple'.");
+        }
+        if (!(timer.getValue().equals("infinite") || timer.patternValidation(timer.getValue()))) {
+            throw new FacesException("The value of 'value' attribute must be 'infinite' or 'aswe'. Default value is 'infinite'.");
+        }
+
         encodeMarkup(context, timer);
         encodeScript(context, timer);
+
     }
 
     protected void encodeMarkup(FacesContext context, Timer timer) throws IOException {
@@ -64,21 +73,8 @@ public class TimerRenderer extends CoreRenderer {
         wb.attr("countdown", timer.isCountdown())
                 .attr("autoStart", timer.isAutoStart())
                 .attr("locale", locale.toString())
-                .attr("mode", timer.getMode());
-
-        if (value.equals("infinite")) {
-            if (timer.isCountdown()) {
-                throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + " countdown:" + timer.isCountdown() + " & " + "value:" + value);
-            } else {
-                wb.attr("value", value);
-            }
-        } else {
-            if (timer.patternValidation(value)) {
-                wb.attr("value", value);
-            } else {
-                throw new UnsupportedOperationException(timer.getClass() + " not supported operation:" + timer.getValue());
-            }
-        }
+                .attr("mode", timer.getMode())
+                .attr("value", value);
 
         encodeClientBehaviors(context, timer);
 
@@ -87,3 +83,5 @@ public class TimerRenderer extends CoreRenderer {
 
     }
 }
+
+
